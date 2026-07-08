@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elchai Proposal Studio — Agent Swarm, Governed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0F14;
+    --panel:#131B24;
+    --panel-2:#0E141C;
+    --line:rgba(233,230,221,0.10);
+    --line-strong:rgba(233,230,221,0.18);
+    --brass:#C9A227;
+    --brass-soft:rgba(201,162,39,0.14);
+    --steel:#3E7CB1;
+    --steel-soft:rgba(62,124,177,0.14);
+    --bone:#E9E6DD;
+    --ash:#8B93A0;
+    --ash-dim:#5C6470;
+    --serif: 'Fraunces', serif;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+  a{color:inherit;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,15,20,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; max-width:1120px; margin:0 auto;
+  }
+  .brandmark{display:flex; align-items:baseline; gap:10px; font-family:var(--mono); font-size:13px; letter-spacing:0.08em;}
+  .brandmark b{color:var(--bone); font-weight:600;}
+  .brandmark span{color:var(--ash-dim);}
+  .nav-cta{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.04em;
+    color:var(--brass); border:1px solid rgba(201,162,39,0.4);
+    padding:9px 16px; border-radius:2px; text-decoration:none;
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .nav-cta:hover{background:var(--brass); color:var(--ink);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 72px;
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.14em;
+    color:var(--brass); text-transform:uppercase;
+    display:flex; align-items:center; gap:10px; margin-bottom:28px;
+  }
+  .eyebrow::before{content:''; width:7px; height:7px; background:var(--brass); border-radius:50%; box-shadow:0 0 0 3px var(--brass-soft);}
+  h1{
+    font-family:var(--serif); font-weight:500;
+    font-size:clamp(34px, 5.2vw, 60px);
+    line-height:1.08; letter-spacing:-0.01em;
+    max-width:15ch;
+    color:var(--bone);
+  }
+  h1 em{font-style:italic; color:var(--brass); font-weight:400;}
+  .sub{
+    margin-top:26px; max-width:56ch; font-size:18px;
+    color:var(--ash); line-height:1.65;
+  }
+  .hero-ctas{display:flex; flex-wrap:wrap; gap:14px; margin-top:38px;}
+  .btn-primary{
+    background:var(--brass); color:var(--ink); font-weight:600; font-size:14.5px;
+    padding:14px 26px; border-radius:2px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 8px 24px -8px rgba(201,162,39,0.5);}
+  .btn-ghost{
+    border:1px solid var(--line-strong); color:var(--bone); font-size:14.5px;
+    padding:14px 26px; border-radius:2px; text-decoration:none;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn-ghost:hover{border-color:var(--ash); background:rgba(233,230,221,0.03);}
+
+  /* ---------- GATE SIGNATURE GRAPHIC ---------- */
+  .gate-strip{
+    margin-top:64px; padding-top:44px; border-top:1px dashed var(--line-strong);
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:0;
+    position:relative;
+  }
+  @media (max-width:800px){ .gate-strip{grid-template-columns:1fr; gap:28px;} }
+  .gate-node{position:relative; padding-right:28px;}
+  .gate-node:not(:last-child)::after{
+    content:'→'; position:absolute; right:-2px; top:2px; color:var(--ash-dim); font-size:14px;
+  }
+  @media (max-width:800px){ .gate-node:not(:last-child)::after{content:'↓'; right:auto; left:0; top:auto; bottom:-24px;} }
+  .gate-num{font-family:var(--mono); font-size:11px; color:var(--ash-dim); letter-spacing:0.1em;}
+  .gate-label{font-size:14.5px; color:var(--bone); margin-top:8px; font-weight:500;}
+  .gate-node.locked .gate-label{color:var(--brass);}
+  .gate-desc{font-size:13px; color:var(--ash-dim); margin-top:4px; line-height:1.5;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:88px 0; border-bottom:1px solid var(--line);}
+  .kicker{font-family:var(--mono); font-size:12px; letter-spacing:0.12em; color:var(--steel); text-transform:uppercase; margin-bottom:16px;}
+  h2{font-family:var(--serif); font-weight:500; font-size:clamp(26px,3.4vw,38px); max-width:20ch; line-height:1.16; color:var(--bone);}
+  .lead{margin-top:18px; max-width:62ch; font-size:16.5px; color:var(--ash);}
+
+  /* ---------- PROBLEM ---------- */
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:52px; background:var(--line);}
+  @media (max-width:720px){ .stat-row{grid-template-columns:1fr;} }
+  .stat{background:var(--ink); padding:32px 28px;}
+  .stat-num{font-family:var(--serif); font-size:42px; color:var(--brass); font-weight:500;}
+  .stat-label{font-size:13.5px; color:var(--ash); margin-top:8px; max-width:26ch;}
+
+  /* ---------- HOW IT WORKS (sequence) ---------- */
+  .pipeline{margin-top:56px; display:flex; flex-direction:column; gap:0;}
+  .stage{
+    display:grid; grid-template-columns:64px 1fr; gap:28px;
+    padding:30px 0; border-top:1px solid var(--line);
+    position:relative;
+  }
+  .stage:last-child{border-bottom:1px solid var(--line);}
+  .stage-num{font-family:var(--mono); font-size:13px; color:var(--ash-dim); padding-top:4px;}
+  .stage-body h3{font-family:var(--sans); font-weight:600; font-size:17px; color:var(--bone); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .tag{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:3px 9px; border-radius:20px; font-weight:500;
+  }
+  .tag-agent{background:var(--steel-soft); color:#79b3e0;}
+  .tag-gate{background:var(--brass-soft); color:var(--brass);}
+  .stage-body p{margin-top:8px; color:var(--ash); font-size:15px; max-width:60ch;}
+
+  /* ---------- BENEFITS ---------- */
+  .benefits{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:52px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:800px){ .benefits{grid-template-columns:1fr;} }
+  .benefit{background:var(--panel-2); padding:36px 30px;}
+  .benefit-mark{font-family:var(--mono); font-size:11px; color:var(--ash-dim); letter-spacing:0.1em;}
+  .benefit h3{font-family:var(--serif); font-size:22px; font-weight:500; color:var(--bone); margin-top:14px;}
+  .benefit p{margin-top:10px; font-size:14.5px; color:var(--ash);}
+
+  /* ---------- USE CASE (mock) ---------- */
+  .usecase-grid{display:grid; grid-template-columns:1fr 1.15fr; gap:48px; margin-top:52px; align-items:start;}
+  @media (max-width:860px){ .usecase-grid{grid-template-columns:1fr;} }
+  .brief-card{
+    background:var(--panel); border:1px solid var(--line-strong); border-radius:4px; padding:26px;
+    font-family:var(--mono); font-size:13px; color:var(--ash);
+  }
+  .brief-card .brief-title{color:var(--bone); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px;}
+  .brief-card .line{display:flex; gap:10px; padding:7px 0; border-top:1px dashed var(--line);}
+  .brief-card .line:first-of-type{border-top:none;}
+  .brief-card .k{color:var(--ash-dim); min-width:88px;}
+  .brief-card .v{color:var(--bone);}
+  .mock-browser{
+    border:1px solid var(--line-strong); border-radius:6px; overflow:hidden; background:var(--panel-2);
+  }
+  .mock-bar{display:flex; align-items:center; gap:6px; padding:10px 14px; background:var(--panel); border-bottom:1px solid var(--line);}
+  .mock-bar span{width:8px; height:8px; border-radius:50%; background:var(--ash-dim); opacity:0.5;}
+  .mock-body{padding:26px; font-family:var(--serif);}
+  .mock-headline{font-size:20px; color:var(--bone); line-height:1.3;}
+  .mock-sub{font-family:var(--sans); font-size:12.5px; color:var(--ash); margin-top:8px; line-height:1.5;}
+  .mock-cta{
+    display:inline-block; margin-top:16px; font-family:var(--sans); font-size:11.5px; font-weight:600;
+    background:var(--brass); color:var(--ink); padding:8px 14px; border-radius:2px;
+  }
+  .gate-status{
+    margin-top:20px; display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:11.5px; color:var(--brass);
+    border-top:1px solid var(--line); padding-top:16px;
+  }
+  .gate-status .dot{width:7px; height:7px; border-radius:50%; background:var(--brass); box-shadow:0 0 0 3px var(--brass-soft);}
+
+  /* ---------- DEPARTMENTS ---------- */
+  .dept-list{margin-top:48px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .dept{background:var(--panel-2); padding:24px 26px;}
+  .dept h4{font-size:15px; color:var(--bone); font-weight:600;}
+  .dept p{font-size:13.5px; color:var(--ash); margin-top:6px;}
+
+  /* ---------- FOOTER CTA ---------- */
+  footer{padding:96px 0 60px;}
+  .footer-inner{display:flex; flex-direction:column; align-items:flex-start; gap:26px;}
+  footer h2{max-width:18ch;}
+  .footer-meta{margin-top:36px; display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:18px; font-family:var(--mono); font-size:11.5px; color:var(--ash-dim); border-top:1px solid var(--line); padding-top:24px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brandmark"><b>ELCHAI</b><span>/ Proposal Studio — Internal Pilot</span></div>
+    <a class="nav-cta" href="#consultation">Request Pilot Access</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">Concept build — OpenClaw × Kimi K2.6 Agent Swarm</div>
+  <h1>Every new brief becomes a client-ready proposal <em>before</em> your coffee's cold — and nothing ships without a seal.</h1>
+  <p class="sub">Elchai's business-development team hand-builds a landing page, a slide deck, and a technical brief for every one of 150+ engagements. Proposal Studio puts an open-source agent swarm behind that work and routes every output through an OpenClaw governance gate — so it's fast without being uncontrolled.</p>
+  <div class="hero-ctas">
+    <a class="btn-primary" href="#consultation">Book a Governance Assessment →</a>
+    <a class="btn-ghost" href="#how">See how the gate works</a>
+  </div>
+
+  <div class="gate-strip">
+    <div class="gate-node">
+      <div class="gate-num">01 — INPUT</div>
+      <div class="gate-label">Client brief</div>
+      <div class="gate-desc">BD lead drops in scope, industry, budget band</div>
+    </div>
+    <div class="gate-node">
+      <div class="gate-num">02 — SWARM</div>
+      <div class="gate-label">Agent draft</div>
+      <div class="gate-desc">Kimi K2.6 sub-agents write copy, layout, deck</div>
+    </div>
+    <div class="gate-node locked">
+      <div class="gate-num">03 — GATE</div>
+      <div class="gate-label">Human seal</div>
+      <div class="gate-desc">Reviewer approves, edits, or rejects in OpenClaw</div>
+    </div>
+    <div class="gate-node">
+      <div class="gate-num">04 — SHIP</div>
+      <div class="gate-label">Client delivery</div>
+      <div class="gate-desc">Approved assets published, logged, versioned</div>
+    </div>
+  </div>
+</header>
+
+<section class="wrap" id="problem">
+  <div class="kicker">The problem</div>
+  <h2>Great proposals are how Elchai wins work. Building them doesn't scale with headcount.</h2>
+  <p class="lead">Every new engagement — a DeFi platform for a bank, a computer-vision line for a manufacturer, a tokenization pilot for a real-estate group — needs its own landing page, its own deck, its own technical narrative. Right now that's a designer, a writer, and a solutions architect, working in parallel, for two to four days, per proposal.</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num">150+</div>
+      <div class="stat-label">projects delivered since 2022, each needing its own pitch assets</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">13</div>
+      <div class="stat-label">industry verticals Elchai serves, each needing a different narrative</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2–4d</div>
+      <div class="stat-label">typical turnaround for a first-draft proposal, before client review</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="how">
+  <div class="kicker">The solution</div>
+  <h2>An open-source agent swarm drafts. OpenClaw decides what leaves the building.</h2>
+  <p class="lead">Kimi K2.6 — Moonshot AI's open-weight model — can split one brief across dozens of specialised sub-agents working in parallel: one drafts landing-page copy, one builds the layout, one assembles the slide deck, one writes the technical scope. Elchai already runs OpenClaw as its governance layer for exactly this kind of execution-heavy, judgment-light work. Proposal Studio is that pairing, applied to BD's biggest bottleneck.</p>
+
+  <div class="pipeline">
+    <div class="stage">
+      <div class="stage-num">01</div>
+      <div class="stage-body">
+        <h3>Brief goes in <span class="tag tag-agent">structured input</span></h3>
+        <p>A BD lead fills a short form: client, industry, scope, tone, budget band, must-mention proof points. No prompt engineering required.</p>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-num">02</div>
+      <div class="stage-body">
+        <h3>Swarm drafts in parallel <span class="tag tag-agent">Kimi K2.6</span></h3>
+        <p>Sub-agents work concurrently: one writes headline/subhead/CTA copy, one lays out a one-page landing concept, one drafts a slide outline with speaker notes, one pulls relevant case studies from Elchai's own portfolio for social proof.</p>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-num">03</div>
+      <div class="stage-body">
+        <h3>Governance gate <span class="tag tag-gate">OpenClaw seal</span></h3>
+        <p>A named reviewer sees a diff-style summary of what the swarm produced, checks claims against reality, fixes tone, and either approves, edits inline, or bounces it back with notes. Nothing is client-facing until this step clears.</p>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-num">04</div>
+      <div class="stage-body">
+        <h3>Delivery &amp; audit trail <span class="tag tag-gate">logged</span></h3>
+        <p>Approved landing page, deck, and brief are exported and logged with who approved what and when — useful for compliance-sensitive clients like banking and government.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="benefits">
+  <div class="kicker">Why this, why now</div>
+  <h2>Three reasons this is worth a pilot, not just a demo.</h2>
+  <div class="benefits">
+    <div class="benefit">
+      <div class="benefit-mark">SPEED</div>
+      <h3>Days to hours</h3>
+      <p>A first-draft landing page, deck outline, and technical brief in under two hours instead of two to four days — freeing designers and architects for the client calls that actually need them.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-mark">COST</div>
+      <h3>Open, not locked in</h3>
+      <p>Kimi K2.6 is released under a modified MIT license and priced far below closed frontier APIs, so Elchai can pilot this without a large recurring model bill or vendor lock-in.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-mark">CONTROL</div>
+      <h3>Governed by design</h3>
+      <p>This isn't autonomous marketing. It's Elchai's own 80/20 model — agents handle the execution, a named human still owns every approval, exactly as OpenClaw is already positioned to clients.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="usecase">
+  <div class="kicker">Worked example</div>
+  <h2>A manufacturing client asks for a predictive-maintenance pitch. Here's the first pass.</h2>
+  <div class="usecase-grid">
+    <div class="brief-card">
+      <div class="brief-title">// Input — BD brief</div>
+      <div class="line"><span class="k">Client</span><span class="v">Regional manufacturer, UAE</span></div>
+      <div class="line"><span class="k">Vertical</span><span class="v">Manufacturing</span></div>
+      <div class="line"><span class="k">Ask</span><span class="v">AI-driven predictive maintenance pitch</span></div>
+      <div class="line"><span class="k">Tone</span><span class="v">Technical, ROI-led</span></div>
+      <div class="line"><span class="k">Proof</span><span class="v">Pull from Elchai automotive case study</span></div>
+      <div class="line"><span class="k">Deadline</span><span class="v">Client call — tomorrow, 10:00</span></div>
+    </div>
+    <div>
+      <div class="mock-browser">
+        <div class="mock-bar"><span></span><span></span><span></span></div>
+        <div class="mock-body">
+          <div class="mock-headline">Stop scheduling maintenance. Start predicting failure.</div>
+          <div class="mock-sub">Elchai's computer-vision and sensor-fusion pipeline flags failing components 2–3 weeks before breakdown — built on your existing line, live in one quarter.</div>
+          <div class="mock-cta">Request a Line Assessment</div>
+        </div>
+      </div>
+      <div class="gate-status"><span class="dot"></span> Draft ready for review — 47 min after brief submitted — awaiting BD lead seal</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="departments">
+  <div class="kicker">Who this serves</div>
+  <h2>Built for BD, but four departments touch this workflow.</h2>
+  <div class="dept-list">
+    <div class="dept">
+      <h4>Product / Business Development</h4>
+      <p>Primary user — turns a brief into pitch assets without waiting on design or engineering bandwidth.</p>
+    </div>
+    <div class="dept">
+      <h4>Engineering</h4>
+      <p>Owns the OpenClaw agent configuration, the gate logic, and keeps the swarm's technical claims accurate.</p>
+    </div>
+    <div class="dept">
+      <h4>IT / Infrastructure</h4>
+      <p>Manages API access, self-hosting decisions, and where drafts and client data are stored.</p>
+    </div>
+    <div class="dept">
+      <h4>Strategy / Leadership</h4>
+      <p>Reviews the audit trail for compliance-sensitive pitches — banking, government, healthcare.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap" id="consultation">
+  <div class="footer-inner">
+    <div class="kicker">Next step</div>
+    <h2>Pilot this on the next three inbound briefs — before it touches a real client.</h2>
+    <p class="lead">Four weeks, three proposals, one reviewer. No client ever sees a swarm-drafted asset that hasn't passed the gate. Full risk assessment and recommendation in the accompanying report.</p>
+    <a class="btn-primary" href="#">Book a Governance Assessment →</a>
+  </div>
+  <div class="footer-meta">
+    <span>ELCHAI GROUP — PROPOSAL STUDIO CONCEPT</span>
+    <span>PREPARED FOR: AI AGENT &amp; OPENCLAW RESEARCH INTERN ASSESSMENT</span>
+    <span>STATUS: PILOT PROPOSAL — NOT DEPLOYED</span>
+  </div>
+</footer>
+
+</body>
+</html>
